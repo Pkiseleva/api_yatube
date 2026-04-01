@@ -1,15 +1,18 @@
-from .serializers import GroupSerializer,PostSerializer,CommentSerializer
-from posts.models import Group, Post, Comment
 from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
+
+
+from .serializers import GroupSerializer,PostSerializer,CommentSerializer
+from posts.models import Group, Post, Comment
 from .permissions import IsAuthorOrReadOnly
-# Create your views here.
+
 
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = (IsAuthenticated,)
+
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
@@ -33,3 +36,4 @@ class CommentViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         post = self.get_post()
         return post.comments.all()
+    
